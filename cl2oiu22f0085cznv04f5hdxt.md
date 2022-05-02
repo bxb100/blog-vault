@@ -61,7 +61,9 @@ So, collusion below (remember when the up satisfied that one can be execute):
 
 In the end, the exception snippet will produce a single line, you can use filter to exclude this.
 
-gist: https://gist.github.com/bxb100/de46e5f708d03d509430d4767806fb14
+## gist
+
+%%[fluenbitconfig]
 
 
 ## Other things
