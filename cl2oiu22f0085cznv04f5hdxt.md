@@ -1,6 +1,6 @@
-## How to use FluentBit multiline
+## How to use fluentbit multiline
 
-One day, my friend asked a question about how to use [fluentBit ](https://fluentbit.io/) (It's popular in k8s [^1]) to collect Java application logs. I had no idea how to do this at first, but finally the result seems good, so I want to give this tale to introduce the way I walk pasted.
+One day, my friend asked a question about how to use [fluentBit ](https://fluentbit.io/) (It's popular in k8s[^1] ) to collect Java application logs. I had no idea how to do this at first, but finally the result seems good, so I want to give this tale to introduce the way I walk pasted.
 
 ![Flow](https://user-images.githubusercontent.com/20685961/163699255-57467f29-4d24-4948-aa27-62aa8d3e9b75.png)
 <p align="center"><em>The config visualizes</em></p>
@@ -9,7 +9,7 @@ Usually, the log file pattern seems unified, it looks like
 
 `2022-04-17 03:10:42.381  INFO 28420 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...`
 
-You can easily use regex to collect each line into a structure. But when the app throws exceptions, you need to use multiline parser [^2] [^3]. Briefly, it's caught raw text read line by line, so each line needs to match [rule](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/multiline-parsing#rules-definition), like this:
+You can easily use regex to collect each line into a structure. But when the app throws exceptions, you need to use multiline parser[^2][^3]. Briefly, it's caught raw text read line by line, so each line needs to match [rule](https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/multiline-parsing#rules-definition), like this:
 
 ```conf
 # rules   |   state name   | regex pattern                   | next state
@@ -64,10 +64,10 @@ In the end, the exception snippet will produce a single line, you can use filter
 gist: https://gist.github.com/bxb100/de46e5f708d03d509430d4767806fb14
 
 
-## Other thing
-Using docker needs packing by yourself [^4] , don't forget it should with ES under same network [^5]
+## Other things
+Using docker needs packing by yourself[^4] , don't forget it should with ES under same network[^5]
 
-1. build an image
+* build an image
 
 ```Dockerfile
 FROM fluent/fluent-bit:1.9.0
@@ -79,7 +79,7 @@ ADD fluent-bit.conf /fluent-bit/etc/
 
 `docker run -id --name fluent -v /e/docker/fluentBit/log:/var/log --network 8x_default fluentbit-cs:sim`
 
-2. mount config to `/fluent-bit/etc`
+* mount config to `/fluent-bit/etc`
 
 `docker run -id --name fluent -v /e/docker/fluentBit/log:/var/log -v /e/docker/fluentBit/config:/fluent-bit/etc --network 8x_default fluent/fluent-bit:1.9.0`
 
@@ -91,15 +91,10 @@ If you are missing `cont2` rule, the ES log will trigger exception like single d
 <p align="center"><em>Obviously It's not my wanted type</em></p>
 
 
-
-[^1]: https://gist.github.com/StevenACoffman/4e267f0f60c8e7fcb3f77b9e504f3bd7 fluent-filebeat-comparison
-
+[^1]: https://gist.github.com/StevenACoffman/4e267f0f60c8e7fcb3f77b9e504f3bd7
 [^2]: https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/multiline-parsing
-
-[^3]: https://docs.fluentbit.io/manual/pipeline/inputs/tail Tail input
-
+[^3]: https://docs.fluentbit.io/manual/pipeline/inputs/tail
 [^4]: https://kevcodez.de/posts/2019-08-10-fluent-bit-docker-logging-driver-elasticsearch/
-
 [^5]: https://juejin.cn/post/6844903847383547911
 
 
